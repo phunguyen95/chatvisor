@@ -28,7 +28,7 @@ app.post('/api/submitMessage', (req, res) => {
   request.on('response', function(response) {
     res.json({
       message: response.result.fulfillment.messages[0].speech,
-      single: message
+      userSent: message
     });
   });
 

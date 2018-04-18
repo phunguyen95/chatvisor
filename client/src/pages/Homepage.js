@@ -31,18 +31,33 @@ class HomePage extends Component {
 
   render() {
     return (
-      <div>
-        <form onSubmit={this.submitForm}>
-          {this.state.response ? (
-            <Messages messages={this.state.response} />
-          ) : null}
-          <input
-            type="text"
-            value={this.state.message}
-            onChange={this.handleInput}
-          />
-          <button type="submit">Send</button>
-        </form>
+      <div className="wrapped-main">
+        <div className="wrapped-container">
+          <div className="container">
+            <div className="inside-container">
+              <div className="primary-content">
+                {this.state.response ? (
+                  <Messages messages={this.state.response} />
+                ) : null}
+              </div>
+              <form className="form-text" onSubmit={this.submitForm}>
+                <input
+                  className="input-text"
+                  type="text"
+                  value={this.state.message}
+                  placeholder="Type your message here"
+                  onChange={this.handleInput}
+                />
+                <img
+                  className="icon-send"
+                  src="/img/send-icon.png"
+                  alt="No image"
+                  onClick={this.submitForm}
+                />
+              </form>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

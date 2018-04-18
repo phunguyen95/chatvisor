@@ -1,0 +1,11 @@
+.top-header {
+  height: 50px;
+  background-color: #7b0400;
+}
+.main-header {
+  background-color: #ae0f0a;
+  height: 70px;
+}
+.fix {
+  position: fixed;
+}
