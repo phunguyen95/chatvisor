@@ -8,12 +8,12 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "install": "(cd client && yarn) && (cd .. && yarn)",
-    "start":
-      "concurrently \"cd client && PORT=3000 yarn start\" \"cd server && PORT=3001 yarn start\"",
-    "client": "yarn start --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "heroku-postbuild": "cd client && yarn --production=false && yarn run build"
+    "install": "(cd client && yarn) && (cd server && yarn)",
+    "server": "cd server && nodemon index.js",
+    "client": "cd client && yarn start",
+    "heroku-postbuild":
+      "cd client && yarn --production=false && yarn run build",
+    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
   },
   "author": "",
   "license": "ISC",
