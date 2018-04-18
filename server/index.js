@@ -7,7 +7,7 @@ app.use(bodyParser.json());
 
 const port = process.env.PORT || 3001;
 app.listen(port, () => {
-  console.log(`SERVER RUNNNING`);
+  console.log(`SERVER RUNNNING`, port);
 });
 app.get('/api/homepage', (req, res) => {});
 app.post('/api/submitMessage', (req, res) => {
