@@ -4,7 +4,14 @@ const http = require('http');
 const app = express();
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
+if (['production'].includes(process.env.NODE_ENV)) {
+  app.use(express.static('client/build'));
 
+  const path = require('path');
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve('client', 'build', 'index.html'));
+  });
+}
 const port = process.env.PORT || 3001;
 app.listen(port, () => {
   console.log(`SERVER RUNNNING`, port);
