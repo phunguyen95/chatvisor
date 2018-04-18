@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "install": "(cd client && yarn add) && (cd server && yarn add)",
+    "install": "(cd client && yarn add) &&  yarn add)",
     "server": "cd server && nodemon index.js",
     "client": "cd client && yarn start",
     "heroku-postbuild":
