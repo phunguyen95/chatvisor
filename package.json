@@ -13,7 +13,7 @@
       "concurrently \"cd client && PORT=3000 yarn start\" \"cd server && PORT=3001 yarn start\"",
     "client": "yarn start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "heroku-postbuild": "yarn build"
+    "heroku-postbuild": "cd client && yarn --production=false && yarn run build"
   },
   "author": "",
   "license": "ISC",
