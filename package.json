@@ -7,13 +7,14 @@
     "node": "8.11.x"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "install": "(cd client && yarn add) && (yarn add)",
-    "server": "cd server && nodemon index.js",
-    "client": "cd client && yarn start",
-    "heroku-postbuild":
-      "cd client && yarn --production=false && yarn run build",
-    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
+    "start": "node index.js",
+    "server": "nodemon index.js --ignore tests",
+    "client": "npm run start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "build":
+      "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client",
+    "heroku-postbuild": "npm run build",
+    "test": "jest"
   },
   "author": "",
   "license": "ISC",
