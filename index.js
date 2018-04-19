@@ -3,7 +3,11 @@ const express = require('express');
 const http = require('http');
 const app = express();
 const bodyParser = require('body-parser');
-app.use(bodyParser.json());
+app.use(
+  bodyParser.urlencoded({
+    extended: true
+  })
+);
 if (['production'].includes(process.env.NODE_ENV)) {
   app.use(express.static('client/build'));
 
@@ -37,4 +41,18 @@ app.post('/api/submitMessage', (req, res) => {
   });
 
   request.end();
+});
+
+app.post('/echo', function(req, res) {
+  var speech =
+    req.body.result &&
+    req.body.result.parameters &&
+    req.body.result.parameters.echoText
+      ? req.body.result.parameters.echoText
+      : 'Seems like some problem. Speak again.';
+  return res.json({
+    speech: speech,
+    displayText: speech,
+    source: 'webhook-echo-sample'
+  });
 });
