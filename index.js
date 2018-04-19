@@ -1,13 +1,16 @@
 var apiai = require('apiai');
 const express = require('express');
 const http = require('http');
-const app = express();
 const bodyParser = require('body-parser');
+
+const app = express();
+
 app.use(
   bodyParser.urlencoded({
     extended: true
   })
 );
+app.use(bodyParser.json());
 if (['production'].includes(process.env.NODE_ENV)) {
   app.use(express.static('client/build'));
 
@@ -50,6 +53,7 @@ app.post('/echo', function(req, res) {
     req.body.result.parameters.echoText
       ? req.body.result.parameters.echoText
       : 'Seems like some problem. Speak again.';
+  console.log(req.body);
   return res.json({
     speech: speech,
     displayText: speech,
