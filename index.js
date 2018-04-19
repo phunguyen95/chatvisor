@@ -50,8 +50,8 @@ app.post('/echo', function(req, res) {
   var speech =
     req.body.result &&
     req.body.result.parameters &&
-    req.body.result.parameters.echoText
-      ? req.body.result.parameters.echoText
+    req.body.result.parameters.library
+      ? req.body.result.parameters.library
       : 'Seems like some problem. Speak again.';
   console.log(req.body);
   return res.json({
