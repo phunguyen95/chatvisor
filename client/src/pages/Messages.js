@@ -1,7 +1,32 @@
 import React, { Component } from 'react';
+import ElectivePaper from './ElectivePaper';
+import PrerequisitesPaper from './PrerequisitesPaper';
 import './css/Message.css';
-
 export default class Messages extends Component {
+  showElectivePapers = list => {
+    let result = null;
+    result = list.electivePapers.map((item, order) => {
+      console.log(item);
+      return <ElectivePaper name={item.name} sku={item.sku} />;
+    });
+    return result;
+  };
+  showPrerequisitesPapers = (list, paperGiven) => {
+    let result = null;
+    result = list.corePapers.map((item, order) => {
+      if (item.name === paperGiven)
+        return <PrerequisitesPaper prerequisites={item.prerequisites} />;
+    });
+    return result;
+  };
+  renderAction = (list, paperGiven, actionGiven) => {
+    console.log(actionGiven);
+    if (actionGiven === 'prerequisites') {
+      return this.showPrerequisitesPapers(list, paperGiven);
+    } else if (actionGiven === 'elective') {
+      return this.showElectivePapers(list);
+    }
+  };
   render() {
     const { messages } = this.props;
     return (
@@ -30,14 +55,22 @@ export default class Messages extends Component {
                         <div className="message-header">
                           <div className="text-header">User</div>
                         </div>
-                        <div class="text-body-sender">
-                          {messages[index].userSent}
-                        </div>
+                        <div class="text-body-sender">{mes.userSent}</div>
                       </div>
                     </div>
                     <div className="message-received">
                       <div class="text-body-received">
-                        {messages[index].message}
+                        {mes.singleMajor ? (
+                          <div>
+                            {this.renderAction(
+                              mes.singleMajor,
+                              mes.paperGiven,
+                              mes.actionGiven
+                            )}
+                          </div>
+                        ) : (
+                          <div>{`${mes.message}`}</div>
+                        )}
                       </div>
                     </div>
                   </div>

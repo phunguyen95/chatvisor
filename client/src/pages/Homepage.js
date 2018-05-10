@@ -5,11 +5,14 @@ import Messages from './Messages';
 class HomePage extends Component {
   state = {
     message: '',
-    response: []
+    response: [],
+    loading: false
   };
   submitForm = e => {
     e.preventDefault();
-
+    this.setState({
+      loading: true
+    });
     const request = axios
       .post('/api/submitMessage', {
         message: this.state.message
@@ -19,7 +22,8 @@ class HomePage extends Component {
           response: [...this.state.response, result.data]
         });
         this.setState({
-          message: ''
+          message: '',
+          loading: false
         });
       });
   };
@@ -77,6 +81,8 @@ class HomePage extends Component {
                   value={this.state.message}
                   placeholder="Type your message here"
                   onChange={this.handleInput}
+                  disabled={this.state.loading ? 'disabled' : ''}
+                  required
                 />
                 <img
                   className="icon-send"
