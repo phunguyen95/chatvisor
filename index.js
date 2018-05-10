@@ -2,15 +2,22 @@ const express = require('express');
 const http = require('http');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-
+const db = require('./config/keys').mongoURI;
+const Courses = require( './model/Course');
 const bodyParser = require('body-parser');
 const messageController = require('./controllers/index');
 dotenv.config();
 const Promise = require('bluebird');
 
 mongoose.Promise = Promise;
-mongoose.connect(process.env.MONGODB_URL, {
-  useMongoClient: true
+mongoose
+.connect(db)
+.then(() => {
+  console.log(db);
+  console.log('connected');
+})
+.catch(err => {
+  console.log(err);
 });
 const app = express();
 
@@ -35,3 +42,10 @@ app.listen(port, () => {
 });
 app.get('/api/homepage', (req, res) => {});
 app.post('/api/submitMessage', messageController.processRequest);
+app.post('/api/sampleDatabase',(req,res)=>{
+  let newCourse = new Courses({
+    text:'abc',
+  });
+  newCourse.save().then(course=>res.status(200).json(course));
+
+})

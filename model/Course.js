@@ -26,5 +26,4 @@ const majorSchema = new mongoose.Schema({
   ]
 });
 
-const Courses = mongoose.model('Courses', majorSchema);
-module.exports = { Courses };
+module.exports = Course = mongoose.model('courses', majorSchema);

@@ -1,7 +1,7 @@
 let apiai = require('apiai');
 const mongoose = require('mongoose');
 
-const { Courses } = require('../model/Course');
+const  Courses  = require('../model/Course');
 handleInputUnknow=(response)=>{
   console.log(response);
   console.log(response.result.contexts[0]);
@@ -67,8 +67,10 @@ exports.processRequest = (req, res) => {
             actionGiven
           });
         } else if (actionGiven === 'prerequisites') {
+          console.log('ihihihihihhi')
           let paperGiven = response.result.parameters.papers;
           console.log(response);
+          let result = Courses.find({});
           const listOfPrePaper = await Courses.find({})
             .where('corePapers.name')
             .equals(response.result.parameters.papers)
@@ -77,7 +79,6 @@ exports.processRequest = (req, res) => {
             listOfPrePaper.forEach(data => {
               singleMajor = data;
             });
-
             res.json({
               message: response.result.fulfillment.messages[0].speech,
               userSent: message,
