@@ -6,7 +6,7 @@ export default class PrerequisitesPaper extends Component {
     return (
       <div>
         <div>
-          {prerequisites
+          {prerequisites.length>0
             ? `${prerequisites}`
             : 'This paper does not require prerequisites papeprs'}
         </div>

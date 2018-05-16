@@ -1,49 +1,60 @@
 let apiai = require('apiai');
 const mongoose = require('mongoose');
 const isEmpty = require('../utils/isEmpty');
-
 const  Courses  = require('../model/Course');
 let lifespanMajor=10;
 let lifeSpanAction=10;
-let userMajor;
-handleInputUnknowMajor=(response)=>{
-  if(response.result.action==='input.unknown' && response.result.contexts.length>0 && response.result.contexts[0].name==='awaiting_major' && lifespanMajor>0 ||response.result.action==='input.unknown' && lifespanMajor>0&&response.result.contexts.length>0 && response.result.contexts[0].name==='awaiting_major' && (isEmpty(response.result.contexts[0].action  )) ){
-    lifespanMajor--;
-    return true;
-  }
-  else{
-    return false;
-  }
-}
+let majorGiven;
+let actionGiven;
+let io  = global.io
+let startConvo = false;
+io.sockets.on('connection', function(socket){
+  console.log(socket.id);
+  console.log('client connected')
+})
+
+//  handleInputUnknowMajor=(response)=>{
+//   if(response.result.action==='input.unknown' && response.result.contexts.length>0 && response.result.contexts[0].name==='awaiting_major' && lifespanMajor>0 ||response.result.action==='input.unknown' && lifespanMajor>0 &&response.result.contexts.length>0 && response.result.contexts[0].name==='awaiting_major' && (isEmpty(response.result.contexts[0].action  )) ){
+//     lifespanMajor--;
+//     return true;
+//   }
+//   else{
+//     return false;
+//   }
+// }
 handleInputUnKnow=(response)=>{
-  if(response.result.action==='input.unknown' && response.result.contexts.length>0){
+  if(response.result.action==='input.unknown' && !isEmpty(majorGiven) ){
     lifespanMajor=0;
     return true;
   }
 }
 handleInputUnknowGreetings=(response)=>{
-if(response.result.action==='input.unknown' &&isEmpty(response.result.contexts)){
+if(response.result.action==='input.unknown' && !startConvo){
   return true;
 }
 else{
   return false;
 }
 }
+exports.initializeSocket=(socketIo)=>{
+
+}
+
 exports.processRequest = (req, res) => {
   let bot = apiai('c621bac4072a4647bb9ecc2b2a0bad87');
-
+  console.log('asd');
   const message = req.body.message;
   let request = bot.textRequest(message, {
     sessionId: '123'
   });
   request.on('response', async response => {
-    let singleMajor;
-    if(handleInputUnknowMajor(response)){
-      res.json({
-        message:'Please provide your major',
-        userSent:message
-      })
-    }
+    let foundResults;
+    // if(handleInputUnknowMajor(response)){
+    //   res.json({
+    //     message:'Please provide your major',
+    //     userSent:message
+    //   })
+    // }
     if(handleInputUnknowGreetings(response)){
       res.json({
         message:'Please start the conversation by saying greetings phrases',
@@ -56,41 +67,39 @@ exports.processRequest = (req, res) => {
         userSent:message
       })
     }
-    if (!isEmpty(userMajor) && lifeSpanAction > 0 && !isEmpty(response.result.parameters))
-    {
-      let actionGiven;
+
+      
+      if(!isEmpty(response.result.parameters)){
         console.log(response);
-        if (response.result.parameters.action.length > 0) {
+        if (!isEmpty(response.result.parameters.action)) {
           actionGiven = response.result.parameters.action[0];
+           majorGiven = response.result.parameters.papers;
           if (actionGiven === 'elective') {
             const listOfElectivePapers = await Courses.find({})
               .where('nameOfMajor')
-              .equals(userMajor)
+              .equals(majorGiven)
               .exec();
             listOfElectivePapers.forEach(data => {
-              singleMajor = data;
+              console.log(data)
+              foundResults = data;
             });
             res.json({
               message: response.result.fulfillment.messages[0].speech,
               userSent: message,
-              singleMajor,
+              foundResults,
               actionGiven
             });
           } else if (actionGiven === 'prerequisites') {
             let paperGiven = response.result.parameters.papers;
-            let result = Courses.find({});
-            const listOfPrePaper = await Courses.find({})
-              .where('corePapers.name')
-              .equals(response.result.parameters.papers)
-              .exec();
+            const listOfPrePaper = await Courses.find({"corePapers.name":paperGiven})
             if (listOfPrePaper.length > 0) {
               listOfPrePaper.forEach(data => {
-                singleMajor = data;
+                foundResults = data;
               });
               res.json({
                 message: response.result.fulfillment.messages[0].speech,
                 userSent: message,
-                singleMajor,
+                foundResults,
                 paperGiven,
                 actionGiven
               });
@@ -101,23 +110,22 @@ exports.processRequest = (req, res) => {
               });
             }
           }
-        
+        }
+        // else if(!isEmpty(response.result.parameters.careers)){
+        //   let careerGiven = response.result.parameters.careers;
+        //   let results = await Course.find({})
+        //   .where('careerOppourtunities.name')
+        //   .equals(careerGiven)
+        //   .exec();
+          
+        // }
+
       }
       
-    }
-    else if (response.result.action === 'given_major') {
-      console.log('vo day');
-     lifespanMajor=0;
-     userMajor=response.result.parameters.givenMajor;
-     response.result.fulfillment.messages[0].speech = `So your major is ${
-       response.result.parameters.givenMajor
-     }`; 
-     res.json({
-       message: response.result.fulfillment.messages[0].speech,
-       userSent: message
-     });
-   }
+    
+
       else if(isEmpty(response.result.parameters)) {
+        startConvo=true;
       res.json({
         message: response.result.fulfillment.messages[0].speech,
         userSent: message

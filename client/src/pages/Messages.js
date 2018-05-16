@@ -13,12 +13,19 @@ export default class Messages extends Component {
   };
   showPrerequisitesPapers = (list, paperGiven) => {
     let result = null;
+    console.log(list);
+    console.log(paperGiven)
     result = list.corePapers.map((item, order) => {
+      console.log(item.name);
       if (item.name === paperGiven)
         return <PrerequisitesPaper prerequisites={item.prerequisites} />;
     });
     return result;
   };
+  // showListPapers=(list)=>{
+  //   let result = null;
+  //   result= list.map(item=>)
+  // }
   renderAction = (list, paperGiven, actionGiven) => {
     console.log(actionGiven);
     if (actionGiven === 'prerequisites') {
@@ -26,6 +33,10 @@ export default class Messages extends Component {
     } else if (actionGiven === 'elective') {
       return this.showElectivePapers(list);
     }
+    // else if(actionGiven===''){
+
+    //   return this.showListPapers(list);
+    // }
   };
   render() {
     const { messages } = this.props;
@@ -60,10 +71,10 @@ export default class Messages extends Component {
                     </div>
                     <div className="message-received">
                       <div class="text-body-received">
-                        {mes.singleMajor ? (
+                        {mes.foundResults ? (
                           <div>
                             {this.renderAction(
-                              mes.singleMajor,
+                              mes.foundResults,
                               mes.paperGiven,
                               mes.actionGiven
                             )}

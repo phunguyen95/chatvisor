@@ -14,9 +14,7 @@ class HomePage extends Component {
       loading: true
     });
     const request = axios
-      .post('/api/submitMessage', {
-        message: this.state.message
-      })
+      .post('/api/submitMessage', { message: this.state.message})
       .then(result => {
         this.setState({
           response: [...this.state.response, result.data]

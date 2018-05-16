@@ -5,7 +5,14 @@ const dotenv = require('dotenv');
 const db = require('./config/keys').mongoURI;
 const Courses = require( './model/Course');
 const bodyParser = require('body-parser');
+const socketIO = require('socket.io')
+
+const app = express();
+const server = http.createServer(app)
+global.io = socketIO(server)
 const messageController = require('./controllers/index');
+messageController.initializeSocket(io);
+
 dotenv.config();
 const Promise = require('bluebird');
 
@@ -19,7 +26,6 @@ mongoose
 .catch(err => {
   console.log(err);
 });
-const app = express();
 
 app.use(
   bodyParser.urlencoded({
@@ -37,15 +43,11 @@ if (['production'].includes(process.env.NODE_ENV)) {
   });
 }
 const port = process.env.PORT || 3001;
-app.listen(port, () => {
-  console.log(`SERVER RUNNNING`, port);
+server.listen(port, () => {
+  console.log(`App is running on port,${port}`);
 });
-app.get('/api/homepage', (req, res) => {});
-app.post('/api/submitMessage', messageController.processRequest);
-app.post('/api/sampleDatabase',(req,res)=>{
-  let newCourse = new Courses({
-    text:'abc',
-  });
-  newCourse.save().then(course=>res.status(200).json(course));
+app.get('/api/homepage', (req, res) => {
+ 
+});
 
-})
+app.post('/api/submitMessage', messageController.processRequest);

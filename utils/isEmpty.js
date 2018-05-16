@@ -8,4 +8,3 @@ const isEmpty = value => {
   };
   module.exports = isEmpty;
   
-  
