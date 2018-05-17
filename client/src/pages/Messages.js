@@ -1,24 +1,31 @@
 import React, { Component } from 'react';
 import ElectivePaper from './ElectivePaper';
 import PrerequisitesPaper from './PrerequisitesPaper';
+import CorequisitesPaper from './CorequisitesPaper';
+import SuggestSetStudyPlan from './SuggestSetStudyPlan';
+import FollowingPapers from './FollowingPapers';
 import './css/Message.css';
 export default class Messages extends Component {
   showElectivePapers = list => {
     let result = null;
     result = list.electivePapers.map((item, order) => {
-      console.log(item);
-      return <ElectivePaper name={item.name} sku={item.sku} />;
+      return (
+        <ElectivePaper name={item.name} sku={item.sku} level={item.level} />
+      );
     });
     return result;
   };
   showPrerequisitesPapers = (list, paperGiven) => {
     let result = null;
-    console.log(list);
-    console.log(paperGiven)
-    result = list.corePapers.map((item, order) => {
-      console.log(item.name);
-      if (item.name === paperGiven)
-        return <PrerequisitesPaper prerequisites={item.prerequisites} />;
+  console.log(list);
+    result = list.map((item, order) => {
+        return (
+          <PrerequisitesPaper
+            key={order}
+            prerequisites={item.prerequisites}
+           
+          />
+        );
     });
     return result;
   };
@@ -26,12 +33,48 @@ export default class Messages extends Component {
   //   let result = null;
   //   result= list.map(item=>)
   // }
+  showCorequisitesPapers = list => {
+    let result =null;
+    result = list.map((item, order) => {
+      return (
+        <CorequisitesPaper
+          key={order}
+          corequisites={item.corequisites}
+         
+        />
+      );
+  });
+    return result;
+  };
+  showStudySuggest = list => {
+    let result = null;
+    result = <SuggestSetStudyPlan list={list} />;
+    return result;
+  };
+  showFollowingPapers = list => {
+    let result = null;
+    result = list.map((item, index) => {
+      return (
+        <FollowingPapers
+          key={index}
+          following={item.followingPaper}
+          name={item.name}
+        />
+      );
+    });
+    return result;
+  };
   renderAction = (list, paperGiven, actionGiven) => {
-    console.log(actionGiven);
     if (actionGiven === 'prerequisites') {
       return this.showPrerequisitesPapers(list, paperGiven);
     } else if (actionGiven === 'elective') {
       return this.showElectivePapers(list);
+    } else if (actionGiven === 'corequisites') {
+      return this.showCorequisitesPapers(list);
+    } else if (actionGiven === 'suggested') {
+      return this.showStudySuggest(list);
+    } else if (actionGiven === 'following') {
+      return this.showFollowingPapers(list);
     }
     // else if(actionGiven===''){
 

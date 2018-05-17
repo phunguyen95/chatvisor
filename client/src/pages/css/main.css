@@ -25,7 +25,7 @@ header img {
 }
 .primary-content {
   z-index: 1;
-  height: 700px;
+  height: 40rem;
   border-bottom: 1px solid black;
   overflow-y: overlay;
 }
@@ -54,30 +54,30 @@ header img {
 }
 @media screen and (max-width: 600px) {
   .form-text {
-    align-items:center;
+    align-items: center;
   }
-  .icon-send{
-    height:35px;
+  .icon-send {
+    height: 35px;
   }
-  .input-text{
-    margin-right:0px;
+  .input-text {
+    margin-right: 0px;
   }
-  .container{
-    padding-left:0px;
-    padding-right:0px;
-    width:80%;
+  .container {
+    padding-left: 0px;
+    padding-right: 0px;
+    width: 80%;
   }
-  .inside-container{
-    padding:0px;
+  .inside-container {
+    padding: 0px;
   }
-  .wrapped-main{
-    height:0px;
+  .wrapped-main {
+    height: 0px;
   }
-  .message-received{
-    max-width:58%;
+  .message-received {
+    max-width: 58%;
   }
-  .primary-content{
-    height:620px;
+  .primary-content {
+    height: 620px;
   }
 }
 html {

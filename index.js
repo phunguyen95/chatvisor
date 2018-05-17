@@ -20,7 +20,6 @@ mongoose.Promise = Promise;
 mongoose
 .connect(db)
 .then(() => {
-  console.log(db);
   console.log('connected');
 })
 .catch(err => {
