@@ -28,7 +28,10 @@ handleInputUnKnow = response => {
 };
 
 handleInputUnknowGreetings = response => {
-  if (isEmpty(response.result.action) && !startConvo) {
+  if (
+    isEmpty(response.result.action.parameters) &&
+    (startConvo === false && isEmpty(response.result.action))
+  ) {
     return true;
   } else {
     return false;
@@ -37,8 +40,7 @@ handleInputUnknowGreetings = response => {
 exports.initializeSocket = socketIo => {};
 
 exports.processRequest = (req, res) => {
-  let bot = apiai('c621bac4072a4647bb9ecc2b2a0bad87');
-  console.log(bot);
+  let bot = apiai('ef35e9af544f49eca390aaf90467c240');
   const message = req.body.message;
   let request = bot.textRequest(message, {
     sessionId: '123'
@@ -67,7 +69,7 @@ exports.processRequest = (req, res) => {
 
     if (!isEmpty(response.result.parameters)) {
       if (!isEmpty(response.result.parameters.action)) {
-        actionGiven = response.result.parameters.action[0];
+        actionGiven = response.result.parameters.action;
         majorGiven = response.result.parameters.major;
         if (actionGiven === 'elective') {
           const listOfElectivePapers = await Courses.find({})
@@ -87,103 +89,146 @@ exports.processRequest = (req, res) => {
           let paperGiven = response.result.parameters.papers;
           const listOfPrePaper = await Courses.find({});
           let corePapers;
-          let electivePapers;   
-          let results;         
-          listOfPrePaper.map(list=>{
-           let query= list.corePapers.filter(item=>item.name===paperGiven);
-             if (query.length > 0) {              
-              corePapers=query;
-          }
-        })
-          if(!isEmpty(corePapers)){
-            foundResults= corePapers;
+          let electivePapers;
+          let results;
+          listOfPrePaper.map(list => {
+            let query = list.corePapers.filter(
+              item => item.name === paperGiven
+            );
+            if (query.length > 0) {
+              corePapers = query;
+            }
+          });
+          if (!isEmpty(corePapers)) {
+            foundResults = corePapers;
             res.json({
               message: response.result.fulfillment.messages[0].speech,
               userSent: message,
               foundResults,
               actionGiven,
               paperGiven
-            })
-          } 
-          else
-          {
-            listOfPrePaper.map(list=>{
-                  let query= list.electivePapers.filter(item=>item.name===paperGiven);
-                  if(query.length>0){
-                    electivePapers=query;
-                  }
-               })
-               if(!isEmpty(electivePapers)){
-                  foundResults= electivePapers;
-                  res.json({
-                    message: response.result.fulfillment.messages[0].speech,
-                    userSent: message,
-                    foundResults,
-                    actionGiven,
-                    paperGiven
-                  })
-               }
-               else {
-                res.json({
-                  message: `Sorry, there is no  papers named ${paperGiven}, please double check again`,
-                  userSent: message
-                });
+            });
+          } else {
+            listOfPrePaper.map(list => {
+              let query = list.electivePapers.filter(
+                item => item.name === paperGiven
+              );
+              if (query.length > 0) {
+                electivePapers = query;
               }
+            });
+            if (!isEmpty(electivePapers)) {
+              foundResults = electivePapers;
+              res.json({
+                message: response.result.fulfillment.messages[0].speech,
+                userSent: message,
+                foundResults,
+                actionGiven,
+                paperGiven
+              });
+            } else {
+              res.json({
+                message: `Sorry, there is no  papers named ${paperGiven}, please double check again`,
+                userSent: message
+              });
+            }
           }
-           
         } else if (actionGiven === 'corequisites') {
           let paperGiven = response.result.parameters.papers;
           const listOfPrePaper = await Courses.find({});
           let corePapers;
-          let electivePapers;   
-          let results;         
-          listOfPrePaper.map(list=>{
-           let query= list.corePapers.filter(item=>item.name===paperGiven);
-             if (query.length > 0) {              
-              corePapers=query;
-          }
-        })
-          if(!isEmpty(corePapers)){
-            foundResults= corePapers;
+          let electivePapers;
+          let results;
+          listOfPrePaper.map(list => {
+            let query = list.corePapers.filter(
+              item => item.name === paperGiven
+            );
+            if (query.length > 0) {
+              corePapers = query;
+            }
+          });
+          if (!isEmpty(corePapers)) {
+            foundResults = corePapers;
             res.json({
               message: response.result.fulfillment.messages[0].speech,
               userSent: message,
               foundResults,
               actionGiven,
               paperGiven
-            })
-          } 
-          else
-          {
-            listOfPrePaper.map(list=>{
-                  let query= list.electivePapers.filter(item=>item.name===paperGiven);
-                  if(query.length>0){
-                    electivePapers=query;
-                  }
-               })
-               if(!isEmpty(electivePapers)){
-                  foundResults= electivePapers;
-                  res.json({
-                    message: response.result.fulfillment.messages[0].speech,
-                    userSent: message,
-                    foundResults,
-                    actionGiven,
-                    paperGiven
-                  })
-               }
-               else {
-                res.json({
-                  message: `Sorry, there is no  papers named ${paperGiven}, please double check again`,
-                  userSent: message
-                });
+            });
+          } else {
+            listOfPrePaper.map(list => {
+              let query = list.electivePapers.filter(
+                item => item.name === paperGiven
+              );
+              if (query.length > 0) {
+                electivePapers = query;
               }
+            });
+            if (!isEmpty(electivePapers)) {
+              foundResults = electivePapers;
+              res.json({
+                message: response.result.fulfillment.messages[0].speech,
+                userSent: message,
+                foundResults,
+                actionGiven,
+                paperGiven
+              });
+            } else {
+              res.json({
+                message: `Sorry, there is no  papers named ${paperGiven}, please double check again`,
+                userSent: message
+              });
+            }
           }
-        }
-         else if (actionGiven === 'suggested') {
+        } else if (actionGiven === 'following') {
+          console.log('vo day');
           majorGiven = response.result.parameters.major;
-          startConvo=true;
+          paperGiven = response.result.parameters.papers;
+          const listPapers = await Courses.find({ nameOfMajor: majorGiven });
+          let foundResults;
+          listPapers.map(item => {
+            foundResults = item.corePapers.filter(
+              item => item.name === paperGiven
+            );
+          });
+          if (foundResults.length > 0) {
+            res.json({
+              message: response.result.fulfillment.messages[0].speech,
+              userSent: message,
+              foundResults,
+              actionGiven,
+              paperGiven
+            });
+          } else {
+            listPapers.map(item => {
+              foundResults = item.electivePapers.filter(
+                item => item.name === paperGiven
+              );
+            });
+            if (foundResults.length > 0) {
+              res.json({
+                message: response.result.fulfillment.messages[0].speech,
+                userSent: message,
+                foundResults,
+                actionGiven,
+                paperGiven
+              });
+            }
+          }
+        } else if (actionGiven === 'suggested') {
+          majorGiven = response.result.parameters.major;
+          startConvo = true;
           res.json({
             message: 'Which years are you in',
+            userSent: message
+          });
+        } else if (
+          isEmpty(response.result.parameters.major) ||
+          isEmpty(response.result.parameters.papers)
+        ) {
+          res.json({
+            message: 'Please enter correct papers or major',
             userSent: message
           });
         }
@@ -220,61 +265,7 @@ exports.processRequest = (req, res) => {
             userSent: message
           });
         }
-      } else if (
-        !isEmpty(response.result.parameters.major) &&
-        !isEmpty(response.result.parameters.papers)
-      ) {
-        actionGiven = 'following';
-        majorGiven = response.result.parameters.major;
-        paperGiven=response.result.parameters.papers
-        const listPapers = await Courses.find({ nameOfMajor: majorGiven });
-        let foundResults;
-        listPapers.map(item => {
-          foundResults = item.corePapers.filter(
-            item => item.name === paperGiven
-          );
-        });
-        if (foundResults.length > 0) {
-          res.json({
-            message: response.result.fulfillment.messages[0].speech,
-            userSent: message,
-            foundResults,
-            actionGiven,
-            paperGiven
-          });
-        } else {
-          listPapers.map(item => {
-            foundResults = item.electivePapers.filter(
-              item => item.name === paperGiven
-            );
-          });
-          if (foundResults.length > 0) {
-            res.json({
-              message: response.result.fulfillment.messages[0].speech,
-              userSent: message,
-              foundResults,
-              actionGiven,
-              paperGiven
-            });
-          }
-        }
-      } else if (
-        isEmpty(response.result.parameters.major) ||
-        isEmpty(response.result.parameters.papers)
-      ) {
-        res.json({
-          message: 'Please enter correct papers or major',
-          userSent: message
-        });
       }
-      // else if(!isEmpty(response.result.parameters.careers)){
-      //   let careerGiven = response.result.parameters.careers;
-      //   let results = await Course.find({})
-      //   .where('careerOppourtunities.name')
-      //   .equals(careerGiven)
-      //   .exec();
-
-      // }
     } else if (isEmpty(response.result.parameters)) {
       startConvo = true;
       res.json({
@@ -288,4 +279,3 @@ exports.processRequest = (req, res) => {
 
   request.end();
 };
-
