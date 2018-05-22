@@ -27,17 +27,16 @@ handleInputUnKnow = response => {
   }
 };
 
-handleInputUnknowGreetings = response => {
-  if (
-    isEmpty(response.result.action.parameters) &&
-    (startConvo === false && isEmpty(response.result.action))
-  ) {
-    return true;
-  } else {
-    return false;
-  }
-};
-exports.initializeSocket = socketIo => {};
+// handleInputUnknowGreetings = response => {
+//   if (
+//     isEmpty(response.result.action.parameters) &&
+//     (startConvo === false && isEmpty(response.result.action))
+//   ) {
+//     return true;
+//   } else {
+//     return false;
+//   }
+// };
 
 exports.processRequest = (req, res) => {
   let bot = apiai('ef35e9af544f49eca390aaf90467c240');
@@ -54,12 +53,12 @@ exports.processRequest = (req, res) => {
     //     userSent:message
     //   })
     // }
-    if (handleInputUnknowGreetings(response)) {
-      res.json({
-        message: 'Please start the conversation by saying greetings phrases',
-        userSent: message
-      });
-    }
+    // if (handleInputUnknowGreetings(response)) {
+    //   res.json({
+    //     message: 'Please start the conversation by saying greetings phrases',
+    //     userSent: message
+    //   });
+    // }
     if (handleInputUnKnow(response)) {
       res.json({
         message: 'Sorry I dont understand',
@@ -71,6 +70,9 @@ exports.processRequest = (req, res) => {
       if (!isEmpty(response.result.parameters.action)) {
         actionGiven = response.result.parameters.action;
         majorGiven = response.result.parameters.major;
+        let jobGiven = response.result.parameters.jobTitle
+          ? response.result.parameters.jobTitle
+          : null;
         if (actionGiven === 'elective') {
           const listOfElectivePapers = await Courses.find({})
             .where('nameOfMajor')
@@ -182,7 +184,6 @@ exports.processRequest = (req, res) => {
             }
           }
         } else if (actionGiven === 'following') {
-          console.log('vo day');
           majorGiven = response.result.parameters.major;
           paperGiven = response.result.parameters.papers;
           const listPapers = await Courses.find({ nameOfMajor: majorGiven });
@@ -216,16 +217,39 @@ exports.processRequest = (req, res) => {
               });
             }
           }
-        } else if (actionGiven === 'suggested') {
+        } else if (actionGiven === 'suggested' && isEmpty(jobGiven)) {
           majorGiven = response.result.parameters.major;
           startConvo = true;
           res.json({
             message: 'Which years are you in',
             userSent: message
           });
+        } else if (response.result.parameters.action === 'jobseeker') {
+          const jobTitle = response.result.parameters.jobTitle
+            ? response.result.parameters.jobTitle
+            : null;
+          let lists = await Courses.find({
+            'careerOppotunities.name': jobTitle
+          });
+          let foundResults;
+          lists.map(list => {
+            foundResults = list.nameOfMajor;
+          });
+          if (!isEmpty(lists)) {
+            res.json({
+              message: foundResults,
+              userSent: message
+            });
+          } else {
+            res.json({
+              message:
+                'Sorry we couldnt find any suitable majors related to given job',
+              userSent: message
+            });
+          }
         } else if (
-          isEmpty(response.result.parameters.major) ||
-          isEmpty(response.result.parameters.papers)
+          (isEmpty(response.result.parameters.major) && isEmpty(jobGiven)) ||
+          (isEmpty(response.result.parameters.papers) && isEmpty(jobGiven))
         ) {
           res.json({
             message: 'Please enter correct papers or major',

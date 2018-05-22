@@ -17,15 +17,11 @@ export default class Messages extends Component {
   };
   showPrerequisitesPapers = (list, paperGiven) => {
     let result = null;
-  console.log(list);
+    console.log(list);
     result = list.map((item, order) => {
-        return (
-          <PrerequisitesPaper
-            key={order}
-            prerequisites={item.prerequisites}
-           
-          />
-        );
+      return (
+        <PrerequisitesPaper key={order} prerequisites={item.prerequisites} />
+      );
     });
     return result;
   };
@@ -34,16 +30,10 @@ export default class Messages extends Component {
   //   result= list.map(item=>)
   // }
   showCorequisitesPapers = list => {
-    let result =null;
+    let result = null;
     result = list.map((item, order) => {
-      return (
-        <CorequisitesPaper
-          key={order}
-          corequisites={item.corequisites}
-         
-        />
-      );
-  });
+      return <CorequisitesPaper key={order} corequisites={item.corequisites} />;
+    });
     return result;
   };
   showStudySuggest = list => {
@@ -91,7 +81,7 @@ export default class Messages extends Component {
               <div className="message-header">
                 <div className="text-header">BOT</div>
               </div>
-              <div class="text-body-received">
+              <div className="text-body-received">
                 Welcome to chatbot AUT,please let me know if you need any help
               </div>
             </div>
@@ -109,11 +99,11 @@ export default class Messages extends Component {
                         <div className="message-header">
                           <div className="text-header">User</div>
                         </div>
-                        <div class="text-body-sender">{mes.userSent}</div>
+                        <div className="text-body-sender">{mes.userSent}</div>
                       </div>
                     </div>
                     <div className="message-received">
-                      <div class="text-body-received">
+                      <div className="text-body-received">
                         {mes.foundResults ? (
                           <div>
                             {this.renderAction(
