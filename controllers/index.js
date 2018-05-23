@@ -289,16 +289,7 @@ exports.processRequest = (req, res) => {
             userSent: message
           });
         }
-      } else if(!isEmpty(response.result.parameters.careers)){
-        let careerGiven = response.result.parameters.careers;
-        let results = await Course.find({})
-        .where('careerOppotunities.name')
-        .equals(careerGiven)
-        .exec();
-
-
-        
-      }
+      } 
 
     } else if (isEmpty(response.result.parameters)) {
       startConvo = true;
