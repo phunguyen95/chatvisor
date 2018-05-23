@@ -20,7 +20,7 @@ export default class Messages extends Component {
     console.log(list);
     result = list.map((item, order) => {
       return (
-        <PrerequisitesPaper key={order} prerequisites={item.prerequisites} />
+        <PrerequisitesPaper key={order} prerequisites={item.prerequisites} name={paperGiven} />
       );
     });
     return result;

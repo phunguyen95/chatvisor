@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 
 export default class PrerequisitesPaper extends Component {
   render() {
-    const { prerequisites } = this.props;
+    const { prerequisites ,name} = this.props;
 
     return (
       <div>
         <div>
           {prerequisites.length > 0
             ? prerequisites.map(item=><div key={item}>Hi,{item}</div>)
-            : 'This paper does not require prerequisites papeprs'}
+            : `${name} does not require any prerequisites.'}
         </div>
       </div>
     );

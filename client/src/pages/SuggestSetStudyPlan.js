@@ -6,7 +6,9 @@ export default class SuggestSetStudyPlan extends Component {
         console.log(list)
         return (
             <div>
-                {list.length>0?list.map(item=><p>{item.name}</p>):null}
+                The list of papers suggested for 
+                {list.length>0?list.map(item=>
+                <p>{item.name}</p>):null}
             </div>
         )
     }
