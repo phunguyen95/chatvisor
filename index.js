@@ -3,28 +3,25 @@ const http = require('http');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const db = require('./config/keys').mongoURI;
-const Courses = require( './model/Course');
+const Courses = require('./model/Course');
 const bodyParser = require('body-parser');
-const socketIO = require('socket.io')
 
 const app = express();
-const server = http.createServer(app)
-global.io = socketIO(server)
+const server = http.createServer(app);
 const messageController = require('./controllers/index');
-messageController.initializeSocket(io);
 
 dotenv.config();
 const Promise = require('bluebird');
 
 mongoose.Promise = Promise;
 mongoose
-.connect(db)
-.then(() => {
-  console.log('connected');
-})
-.catch(err => {
-  console.log(err);
-});
+  .connect(db)
+  .then(() => {
+    console.log('connected');
+  })
+  .catch(err => {
+    console.log(err);
+  });
 
 app.use(
   bodyParser.urlencoded({
@@ -45,8 +42,6 @@ const port = process.env.PORT || 3001;
 server.listen(port, () => {
   console.log(`App is running on port,${port}`);
 });
-app.get('/api/homepage', (req, res) => {
- 
-});
+app.get('/api/homepage', (req, res) => {});
 
 app.post('/api/submitMessage', messageController.processRequest);
