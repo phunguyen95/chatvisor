@@ -5,11 +5,9 @@ const dotenv = require('dotenv');
 const db = require('./config/keys').mongoURI;
 const Courses = require('./model/Course');
 const bodyParser = require('body-parser');
-const socketIO = require('socket.io');
 
 const app = express();
 const server = http.createServer(app);
-global.io = socketIO(server);
 const messageController = require('./controllers/index');
 
 dotenv.config();
