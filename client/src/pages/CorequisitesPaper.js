@@ -8,7 +8,7 @@ export default class CorequisitesPaper extends Component {
       <div>
         {corequisites.length > 0
           ? corequisites.map(item => <div>{item}</div>)
-          : 'This paper does not require co-requisites papeprs'}
+          : 'This paper does not require any co-requisites papers'}
       </div>
     );
   }
