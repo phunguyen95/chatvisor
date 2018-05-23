@@ -82,7 +82,7 @@ export default class Messages extends Component {
                 <div className="text-header">BOT</div>
               </div>
               <div className="text-body-received">
-                Welcome to chatbot AUT,please let me know if you need any help
+                Welcome to chatbot AUT, please let me know if you need any help
               </div>
             </div>
           </div>

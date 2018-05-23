@@ -130,7 +130,7 @@ exports.processRequest = (req, res) => {
               });
             } else {
               res.json({
-                message: `Sorry, there is no  papers named ${paperGiven}, please double check again`,
+                message: `Sorry, there is no papers named ${paperGiven}, please double check again`,
                 userSent: message
               });
             }
@@ -178,7 +178,7 @@ exports.processRequest = (req, res) => {
               });
             } else {
               res.json({
-                message: `Sorry, there is no  papers named ${paperGiven}, please double check again`,
+                message: `Sorry, there is no papers named ${paperGiven}, please double check again`,
                 userSent: message
               });
             }
@@ -243,7 +243,7 @@ exports.processRequest = (req, res) => {
           } else {
             res.json({
               message:
-                'Sorry we couldnt find any suitable majors related to given job',
+                'Sorry, we couldnt find any suitable majors related to given job',
               userSent: message
             });
           }
@@ -289,7 +289,8 @@ exports.processRequest = (req, res) => {
             userSent: message
           });
         }
-      }
+      } 
+
     } else if (isEmpty(response.result.parameters)) {
       startConvo = true;
       res.json({
