@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 
 export default class SuggestSetStudyPlan extends Component {
     render() {
@@ -10,4 +10,14 @@ export default class SuggestSetStudyPlan extends Component {
             </div>
         )
     }
+  render() {
+    const { list, major, currentYear } = this.props;
+
+    return (
+      <div>
+        Here is the suggested list of papers for {major} in Year {currentYear}:
+        {list.length > 0 ? list.map(item => <p>{item.name}</p>) : null}
+      </div>
+    );
+  }
 }

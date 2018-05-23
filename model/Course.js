@@ -37,9 +37,7 @@ const majorSchema = new mongoose.Schema({
   ],
   careerOppotunities: [
     {
-      name: {
-        type: String
-      }
+      name: { type: String }
     }
   ]
 });
