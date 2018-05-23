@@ -7,7 +7,7 @@ export default class FollowingPapers extends Component {
       <div>
         <p>
           {following.length > 0
-            ? `The following papers of ${name} is:`
+            ? `The suggested paper after completing ${name} is:`
             : `There are no following papers for ${name}`}
         </p>
         <div>

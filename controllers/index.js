@@ -61,7 +61,7 @@ exports.processRequest = (req, res) => {
     // }
     if (handleInputUnKnow(response)) {
       res.json({
-        message: 'Sorry I dont understand',
+        message: 'Sorry! I do not quite understand you. Could you try another question?',
         userSent: message
       });
     }
@@ -130,7 +130,7 @@ exports.processRequest = (req, res) => {
               });
             } else {
               res.json({
-                message: `Sorry, there is no papers named ${paperGiven}, please double check again`,
+                message: `Sorry, there are no papers named ${paperGiven}. Perhaps try again with another paper?`,
                 userSent: message
               });
             }
@@ -178,7 +178,7 @@ exports.processRequest = (req, res) => {
               });
             } else {
               res.json({
-                message: `Sorry, there is no papers named ${paperGiven}, please double check again`,
+                message: `Sorry, there are no  papers named ${paperGiven}. Perhaps try again with a different paper?`,
                 userSent: message
               });
             }
@@ -221,7 +221,7 @@ exports.processRequest = (req, res) => {
           majorGiven = response.result.parameters.major;
           startConvo = true;
           res.json({
-            message: 'Which years are you in',
+            message: 'Which year of your degree are you currently in?',
             userSent: message
           });
         } else if (response.result.parameters.action === 'jobseeker') {
@@ -243,7 +243,7 @@ exports.processRequest = (req, res) => {
           } else {
             res.json({
               message:
-                'Sorry, we couldnt find any suitable majors related to given job',
+                `Sorry, we couldnt find any suggested majors for that specific ${jobTitle}`,
               userSent: message
             });
           }
