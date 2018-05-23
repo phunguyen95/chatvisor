@@ -6,11 +6,11 @@ import SuggestSetStudyPlan from './SuggestSetStudyPlan';
 import FollowingPapers from './FollowingPapers';
 import './css/Message.css';
 export default class Messages extends Component {
-  showElectivePapers = list => {
+  showElectivePapers = (majorGiven,list) => {
     let result = null;
     result = list.electivePapers.map((item, order) => {
       return (
-        <ElectivePaper name={item.name} sku={item.sku} level={item.level} />
+        <ElectivePaper name={item.name} sku={item.sku} level={item.level} major={majorGiven} />
       );
     });
     return result;
@@ -68,7 +68,7 @@ export default class Messages extends Component {
     if (actionGiven === 'prerequisites') {
       return this.showPrerequisitesPapers(list, paperGiven);
     } else if (actionGiven === 'elective') {
-      return this.showElectivePapers(list);
+      return this.showElectivePapers(list,majorGiven);
     } else if (actionGiven === 'corequisites') {
       return this.showCorequisitesPapers(list);
     } else if (actionGiven === 'suggested') {
@@ -123,7 +123,8 @@ export default class Messages extends Component {
                               mes.paperGiven,
                               mes.actionGiven,
                               mes.major,
-                              mes.currentYear
+                              mes.currentYear,
+                              mes.majorGiven
                             )}
                           </div>
                         ) : (
