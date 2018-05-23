@@ -85,7 +85,8 @@ exports.processRequest = (req, res) => {
             message: response.result.fulfillment.messages[0].speech,
             userSent: message,
             foundResults,
-            actionGiven
+            actionGiven,
+            majorGiven
           });
         } else if (actionGiven === 'prerequisites') {
           let paperGiven = response.result.parameters.papers;
