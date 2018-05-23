@@ -20,7 +20,6 @@ export default class Messages extends Component {
     console.log(list);
     result = list.map((item, order) => {
       return (
-        <PrerequisitesPaper key={order} prerequisites={item.prerequisites} name={paperGiven} />
         <PrerequisitesPaper
           key={order}
           prerequisites={item.prerequisites}
@@ -93,8 +92,9 @@ export default class Messages extends Component {
                 <div className="text-header">BOT</div>
               </div>
               <div className="text-body-received">
-                Welcome to ChadVisor. I am here to help you with info about your BCIS papers. Ask me a question and I'll try to help!
-                Welcome to chatbot AUT, please let me know if you need any help
+                Welcome to ChadVisor. I am here to help you with info about your
+                BCIS papers. Ask me a question and I'll try to help! Welcome to
+                chatbot AUT, please let me know if you need any help
               </div>
             </div>
           </div>
