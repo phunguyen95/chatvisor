@@ -262,17 +262,21 @@ exports.processRequest = (req, res) => {
           paperGiven = '';
           const lists = await Courses.find({ nameOfMajor: majorGiven });
           let corePapers;
+          let major;
           lists.map(list => {
+            major = list.nameOfMajor;
             corePapers = list.corePapers.filter(
               item => item.year.toString() === currentYear
             );
           });
+          console.log(major);
           let electivePapers;
           lists.map(list => {
             electivePapers = list.electivePapers.filter(
               item => item.year.toString() === currentYear
             );
           });
+
           let foundResults;
           foundResults = [...corePapers, ...electivePapers];
           res.json({
@@ -280,7 +284,9 @@ exports.processRequest = (req, res) => {
             userSent: message,
             foundResults,
             actionGiven,
-            paperGiven
+            paperGiven,
+            major,
+            currentYear
           });
         } else {
           res.json({

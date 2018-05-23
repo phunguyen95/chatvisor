@@ -20,7 +20,11 @@ export default class Messages extends Component {
     console.log(list);
     result = list.map((item, order) => {
       return (
-        <PrerequisitesPaper key={order} prerequisites={item.prerequisites} />
+        <PrerequisitesPaper
+          key={order}
+          prerequisites={item.prerequisites}
+          name={paperGiven}
+        />
       );
     });
     return result;
@@ -36,9 +40,15 @@ export default class Messages extends Component {
     });
     return result;
   };
-  showStudySuggest = list => {
+  showStudySuggest = (list, major, currentYear) => {
     let result = null;
-    result = <SuggestSetStudyPlan list={list} />;
+    result = (
+      <SuggestSetStudyPlan
+        list={list}
+        major={major}
+        currentYear={currentYear}
+      />
+    );
     return result;
   };
   showFollowingPapers = list => {
@@ -54,7 +64,7 @@ export default class Messages extends Component {
     });
     return result;
   };
-  renderAction = (list, paperGiven, actionGiven) => {
+  renderAction = (list, paperGiven, actionGiven, major, currentYear) => {
     if (actionGiven === 'prerequisites') {
       return this.showPrerequisitesPapers(list, paperGiven);
     } else if (actionGiven === 'elective') {
@@ -62,7 +72,7 @@ export default class Messages extends Component {
     } else if (actionGiven === 'corequisites') {
       return this.showCorequisitesPapers(list);
     } else if (actionGiven === 'suggested') {
-      return this.showStudySuggest(list);
+      return this.showStudySuggest(list, major, currentYear);
     } else if (actionGiven === 'following') {
       return this.showFollowingPapers(list);
     }
@@ -109,7 +119,9 @@ export default class Messages extends Component {
                             {this.renderAction(
                               mes.foundResults,
                               mes.paperGiven,
-                              mes.actionGiven
+                              mes.actionGiven,
+                              mes.major,
+                              mes.currentYear
                             )}
                           </div>
                         ) : (
