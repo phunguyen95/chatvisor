@@ -6,11 +6,21 @@ import SuggestSetStudyPlan from './SuggestSetStudyPlan';
 import FollowingPapers from './FollowingPapers';
 import './css/Message.css';
 export default class Messages extends Component {
-  showElectivePapers = (majorGiven,list) => {
+  showElectivePapers = (list, majorGiven) => {
     let result = null;
+
     result = list.electivePapers.map((item, order) => {
       return (
-        <ElectivePaper name={item.name} sku={item.sku} level={item.level} major={majorGiven} />
+        <div>
+          <p>The list of electives available for {majorGiven} are: </p>
+
+          <ElectivePaper
+            name={item.name}
+            sku={item.sku}
+            level={item.level}
+            major={majorGiven}
+          />
+        </div>
       );
     });
     return result;
@@ -64,11 +74,18 @@ export default class Messages extends Component {
     });
     return result;
   };
-  renderAction = (list, paperGiven, actionGiven, major, currentYear) => {
+  renderAction = (
+    list,
+    paperGiven,
+    actionGiven,
+    major,
+    currentYear,
+    majorGiven
+  ) => {
     if (actionGiven === 'prerequisites') {
       return this.showPrerequisitesPapers(list, paperGiven);
     } else if (actionGiven === 'elective') {
-      return this.showElectivePapers(list,majorGiven);
+      return this.showElectivePapers(list, majorGiven);
     } else if (actionGiven === 'corequisites') {
       return this.showCorequisitesPapers(list);
     } else if (actionGiven === 'suggested') {

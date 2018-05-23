@@ -61,7 +61,8 @@ exports.processRequest = (req, res) => {
     // }
     if (handleInputUnKnow(response)) {
       res.json({
-        message: 'Sorry! I do not quite understand you. Could you try another question?',
+        message:
+          'Sorry! I do not quite understand you. Could you try another question?',
         userSent: message
       });
     }
@@ -131,7 +132,7 @@ exports.processRequest = (req, res) => {
               });
             } else {
               res.json({
-                message: `Sorry, there are no papers named ${paperGiven}. Perhaps try again with another paper?`,
+                message: `Sorry, there are no papers named like that. Perhaps try again with another paper?`,
                 userSent: message
               });
             }
@@ -179,15 +180,14 @@ exports.processRequest = (req, res) => {
               });
             } else {
               res.json({
-                message: `Sorry, there are no  papers named ${paperGiven}. Perhaps try again with a different paper?`,
+                message: `Sorry, there are no papers named like that. Perhaps try again with another paper?`,
                 userSent: message
               });
             }
           }
         } else if (actionGiven === 'following') {
-          majorGiven = response.result.parameters.major;
           paperGiven = response.result.parameters.papers;
-          const listPapers = await Courses.find({ nameOfMajor: majorGiven });
+          const listPapers = await Courses.find({});
           let foundResults;
           listPapers.map(item => {
             foundResults = item.corePapers.filter(
@@ -216,6 +216,11 @@ exports.processRequest = (req, res) => {
                 actionGiven,
                 paperGiven
               });
+            } else {
+              res.json({
+                message: `Sorry, there are no papers named like that. Perhaps try again with another paper?`,
+                userSent: message
+              });
             }
           }
         } else if (actionGiven === 'suggested' && isEmpty(jobGiven)) {
@@ -238,13 +243,12 @@ exports.processRequest = (req, res) => {
           });
           if (!isEmpty(lists)) {
             res.json({
-              message: foundResults,
+              message: `You shoudl consider taking ${foundResults} if you want to be a ${jobTitle}`,
               userSent: message
             });
           } else {
             res.json({
-              message:
-                `Sorry, we couldnt find any suggested majors for that specific ${jobTitle}`,
+              message: `Sorry, we couldnt find any suggested majors for that specific job`,
               userSent: message
             });
           }
@@ -296,8 +300,7 @@ exports.processRequest = (req, res) => {
             userSent: message
           });
         }
-      } 
-
+      }
     } else if (isEmpty(response.result.parameters)) {
       startConvo = true;
       res.json({
