@@ -291,7 +291,7 @@ exports.processRequest = (req, res) => {
         } else {
           res.json({
             message:
-              'We cant find any papers related to your study,can you please re-enter the year again',
+              'Sorry the papers that are offered are limited to only year 1, 2 or 3. Can you please re-enter the year again?',
             userSent: message
           });
         }
