@@ -243,7 +243,7 @@ exports.processRequest = (req, res) => {
           });
           if (!isEmpty(lists)) {
             res.json({
-              message: `You shoudl consider taking ${foundResults} if you want to be a ${jobTitle}`,
+              message: `You shoud consider taking ${foundResults} if you want to be a ${jobTitle}`,
               userSent: message
             });
           } else {
@@ -303,10 +303,40 @@ exports.processRequest = (req, res) => {
       }
     } else if (isEmpty(response.result.parameters)) {
       startConvo = true;
+    console.log('vo day');
       res.json({
         message: response.result.fulfillment.messages[0].speech,
         userSent: message
       });
+    }
+     if(isEmpty(response.result.parameters.jobTitle)){
+      res.json({
+        message: `Sorry, we couldnt find any suggested majors for that specific job`,
+        userSent: message          
+      })
+    }
+    else if (!isEmpty(response.result.parameters.jobTitle)) {
+      const jobTitle = response.result.parameters.jobTitle
+        ? response.result.parameters.jobTitle
+        : null;
+      let lists = await Courses.find({
+        'careerOppotunities.name': jobTitle
+      });
+      let foundResults;
+      lists.map(list => {
+        foundResults = list.nameOfMajor;
+      });
+      if (!isEmpty(lists)) {
+        res.json({
+          message: `You shoudl consider taking ${foundResults} if you want to be a ${jobTitle}`,
+          userSent: message
+        });
+      } else {
+        res.json({
+          message: `Sorry, we couldnt find any suggested majors for that specific job`,
+          userSent: message
+        });
+      }
     }
   });
 
