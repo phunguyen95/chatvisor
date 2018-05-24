@@ -46,7 +46,6 @@ exports.processRequest = (req, res) => {
   });
   request.on('response', async response => {
     let foundResults;
-    console.log(response);
     // if(handleInputUnknowMajor(response)){
     //   res.json({
     //     message:'Please provide your major',
@@ -82,13 +81,23 @@ exports.processRequest = (req, res) => {
           listOfElectivePapers.forEach(data => {
             foundResults = data;
           });
-          res.json({
-            message: response.result.fulfillment.messages[0].speech,
-            userSent: message,
-            foundResults,
-            actionGiven,
-            majorGiven
-          });
+          
+          if(listOfElectivePapers.length>0){
+            res.json({
+              message: response.result.fulfillment.messages[0].speech,
+              userSent: message,
+              foundResults,
+              actionGiven,
+              majorGiven
+            });
+          }
+          else{
+            res.json({
+              message:'Sorry, we can not find any results regarding on that major',
+              userSent:message
+            })
+          }
+         
         } else if (actionGiven === 'prerequisites') {
           let paperGiven = response.result.parameters.papers;
           const listOfPrePaper = await Courses.find({});
@@ -274,7 +283,6 @@ exports.processRequest = (req, res) => {
               item => item.year.toString() === currentYear
             );
           });
-          console.log(major);
           let electivePapers;
           lists.map(list => {
             electivePapers = list.electivePapers.filter(
@@ -303,7 +311,6 @@ exports.processRequest = (req, res) => {
       }
     } else if (isEmpty(response.result.parameters)) {
       startConvo = true;
-    console.log('vo day');
       res.json({
         message: response.result.fulfillment.messages[0].speech,
         userSent: message

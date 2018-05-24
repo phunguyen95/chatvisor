@@ -9,25 +9,16 @@ export default class Messages extends Component {
   showElectivePapers = (list, majorGiven) => {
     let result = null;
 
-    result = list.electivePapers.map((item, order) => {
-      return (
-        <div>
-          <p>The list of electives available for {majorGiven} are: </p>
-
+      result= (
           <ElectivePaper
-            name={item.name}
-            sku={item.sku}
-            level={item.level}
+            list={list}
             major={majorGiven}
           />
-        </div>
       );
-    });
     return result;
   };
   showPrerequisitesPapers = (list, paperGiven) => {
     let result = null;
-    console.log(list);
     result = list.map((item, order) => {
       return (
         <PrerequisitesPaper

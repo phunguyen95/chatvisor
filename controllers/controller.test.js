@@ -31,11 +31,11 @@ test('Server should be able to connect to mongoose database', () => {
 });
 describe('When user send requuest', () => {
   test('Server should be able to access to DialogFlow API', () => {
-    let bot = apiai('c621bac4072a4647bb9ecc2b2a0bad87');
+    let bot = apiai('ef35e9af544f49eca390aaf90467c240');
     expect(isEmpty(bot)).toBe(false);
   });
   test('Server should be able to receive request from DialogFlow', done => {
-    let bot = apiai('c621bac4072a4647bb9ecc2b2a0bad87');
+    let bot = apiai('ef35e9af544f49eca390aaf90467c240');
     const message = 'Hi';
     let request = bot.textRequest(message, {
       sessionId: '123'
@@ -47,7 +47,7 @@ describe('When user send requuest', () => {
     request.end();
   });
   test('Server should be able to respond Welcome after user say Hi', done => {
-    let bot = apiai('c621bac4072a4647bb9ecc2b2a0bad87');
+    let bot = apiai('ef35e9af544f49eca390aaf90467c240');
     const message = 'Hi';
     let request = bot.textRequest(message, {
       sessionId: '123'
@@ -61,7 +61,7 @@ describe('When user send requuest', () => {
     request.end();
   });
   test('Server should be able to handle with unknown input from user', done => {
-    let bot = apiai('c621bac4072a4647bb9ecc2b2a0bad87');
+    let bot = apiai('ef35e9af544f49eca390aaf90467c240');
     const message = 'asdasdasdasd';
     let request = bot.textRequest(message, {
       sessionId: '123'
@@ -73,7 +73,7 @@ describe('When user send requuest', () => {
     request.end();
   });
   test('Server should be able to receive the name of <paper given> by students', done => {
-    let bot = apiai('c621bac4072a4647bb9ecc2b2a0bad87');
+    let bot = apiai('ef35e9af544f49eca390aaf90467c240');
     const message = 'Programming 2';
     let request = bot.textRequest(message, {
       sessionId: '123'
@@ -85,7 +85,7 @@ describe('When user send requuest', () => {
     request.end();
   });
   test('Server should be able to receive the <major given> given by students', done => {
-    let bot = apiai('c621bac4072a4647bb9ecc2b2a0bad87');
+    let bot = apiai('ef35e9af544f49eca390aaf90467c240');
     const message =
       'can you provide me a suggested set of papers for software development';
     let request = bot.textRequest(message, {
@@ -98,26 +98,26 @@ describe('When user send requuest', () => {
     request.end();
   });
   test('Server should be able to handle <action given> by user', done => {
-    let bot = apiai('c621bac4072a4647bb9ecc2b2a0bad87');
+    let bot = apiai('ef35e9af544f49eca390aaf90467c240');
     const message = 'What papers is prerequisites of Programming 2';
     let request = bot.textRequest(message, {
       sessionId: '123'
     });
     request.on('response', async response => {
-      expect(response.result.parameters.action[0]).toBe('prerequisites');
+      expect(response.result.parameters.action).toBe('prerequisites');
       done();
     });
     request.end();
   });
   test('Server should be able to responds list of elective papers from database for <major given> by students', done => {
-    let bot = apiai('c621bac4072a4647bb9ecc2b2a0bad87');
+    let bot = apiai('ef35e9af544f49eca390aaf90467c240');
     const message =
       'Can you show me a list of elective papers for software development';
     let request = bot.textRequest(message, {
       sessionId: '123'
     });
     request.on('response', async response => {
-      let actionGiven = response.result.parameters.action[0];
+      let actionGiven = response.result.parameters.action;
       majorGiven = response.result.parameters.major;
       const listOfElectivePapers = await Courses.find({});
       expect(!isEmpty(listOfElectivePapers)).toBe(true);
@@ -125,48 +125,9 @@ describe('When user send requuest', () => {
     });
     request.end();
   });
-  // test('Server should be able to let students know what papers is prerequisites of <paper given> ',(done)=>{
-  //     let bot = apiai('c621bac4072a4647bb9ecc2b2a0bad87');
-  //     const message = 'What papers is prerequisites of Programming 2';
-  //     let request = bot.textRequest(message, {
-  //       sessionId: '123'
-  //     });
-  //     request.on('response',  async response => {
-  //         let paperGiven = response.result.parameters.papers;
-  //         const lists = await Courses.find({});
-  //         let corePapers;
-  //         let electivePapers;
-  //         let results;
-  //         lists.map(list=>{
-  //            corePapers= list.corePapers.filter(item=>item.name===paperGiven);
-  //         })
-  //         if(!isEmpty(corePapers)){
-  //            results= corePapers.map(item=>item.prerequisites)
-  //            let result;
-  //             results.map(item=>result=item);
-  //             expect(result[0]).toBe('COMP500 Programming 1');
-  //         }
-  //         else
-  //         {
-  //             lists.map(list=>{
-  //                 electivePapers= list.electivePapers.filter(item=>item.name===paperGiven);
-  //              })
-  //              if(!isEmpty(electivePapers)){
-  //                 results= electivePapers.map(item=>item.prerequisites)
-  //                 let result;
-  //                 results.map(item=>result=item);
-  //                 expect(!isEmpty(results)).toBe(true);
-  //              }
-  //              else{
-  //                  results='This paper does not have any reprequisites papers'
-  //              }
-  //         }
-  //         done();
-  //     });
-  //     request.end();
-  // })
+
   test('Server should be able to let students know what papers is prerequisites of <paper given> ', done => {
-    let bot = apiai('c621bac4072a4647bb9ecc2b2a0bad87');
+    let bot = apiai('ef35e9af544f49eca390aaf90467c240');
     const message = 'What papers is prerequisites of Programming 2';
     let request = bot.textRequest(message, {
       sessionId: '123'
@@ -225,7 +186,7 @@ describe('When user send requuest', () => {
     request.end();
   });
   test('Server should be able to let students know what papers is corequisites of <paper given> ', done => {
-    let bot = apiai('c621bac4072a4647bb9ecc2b2a0bad87');
+    let bot = apiai('ef35e9af544f49eca390aaf90467c240');
     const message =
       'What papers is corequisites of Program Design and Construction';
     let request = bot.textRequest(message, {
@@ -288,7 +249,7 @@ describe('When user send requuest', () => {
     request.end();
   });
   test('Server should be able to responds list of suggested papers from database for <major given> by students based on which years they are', done => {
-    let bot = apiai('c621bac4072a4647bb9ecc2b2a0bad87');
+    let bot = apiai('ef35e9af544f49eca390aaf90467c240');
     const message =
       'can you provide me a suggested set of papers for software development';
     let request = bot.textRequest(message, {
@@ -318,7 +279,7 @@ describe('When user send requuest', () => {
     request.end();
   });
   test('Server should be able to respond list of following papers based on <major given>', done => {
-    let bot = apiai('c621bac4072a4647bb9ecc2b2a0bad87');
+    let bot = apiai('ef35e9af544f49eca390aaf90467c240');
     const message =
       'If I take a Programming 2 what other papers should I take next for software development major';
     let request = bot.textRequest(message, {
