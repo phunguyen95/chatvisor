@@ -110,8 +110,7 @@ export default class Messages extends Component {
               </div>
               <div className="text-body-received">
                 Welcome to ChadVisor. I am here to help you with info about your
-                BCIS papers. Ask me a question and I'll try to help! Welcome to
-                chatbot AUT, please let me know if you need any help
+                BCIS papers. Ask me a question and I'll try to help!
               </div>
             </div>
           </div>
