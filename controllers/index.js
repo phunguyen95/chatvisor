@@ -328,7 +328,7 @@ exports.processRequest = (req, res) => {
       });
       if (!isEmpty(lists)) {
         res.json({
-          message: `You shoudl consider taking ${foundResults} if you want to be a ${jobTitle}`,
+          message: `You shoud consider taking ${foundResults} if you want to be a ${jobTitle}`,
           userSent: message
         });
       } else {
