@@ -316,13 +316,14 @@ exports.processRequest = (req, res) => {
         userSent: message
       });
     }
-     if(isEmpty(response.result.parameters.jobTitle)){
+     if(isEmpty(response.result.parameters.jobTitle) && isEmpty(response.result.parameters.papers) && isEmpty(response.result.parameters.major)){
+       console.log(response);
       res.json({
         message: `Sorry, we couldnt find any suggested majors for that specific job`,
         userSent: message          
       })
     }
-    else if (!isEmpty(response.result.parameters.jobTitle)) {
+    else if (!isEmpty(response.result.parameters.jobTitle)&& isEmpty(response.result.parameters.papers) && isEmpty(response.result.parameters.major)) {
       const jobTitle = response.result.parameters.jobTitle
         ? response.result.parameters.jobTitle
         : null;
@@ -339,12 +340,20 @@ exports.processRequest = (req, res) => {
           userSent: message
         });
       } else {
+        console.log('vo else');
         res.json({
           message: `Sorry, we couldnt find any suggested majors for that specific job`,
           userSent: message
         });
       }
     }
+    if(!isEmpty(response.result.parameters.papers)){
+      res.json({
+        message: `Sorry, what do you mean by ${response.result.parameters.papers}?`,
+        userSent: message          
+      })
+    }
+  
   });
 
   request.on('error', function(error) {});
